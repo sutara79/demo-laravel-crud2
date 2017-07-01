@@ -1,0 +1,32 @@
+sudo: required # for Dusk
+language: php
+dist: trusty # for Dusk
+
+php:
+  - 7.1
+
+services:
+  - postgresql
+
+install:
+  - travis_retry composer install --no-interaction
+
+before_script:
+  - export DISPLAY=:99.0
+  - sh -e /etc/init.d/xvfb start
+  - ./vendor/laravel/dusk/bin/chromedriver-linux &
+  - cp .env.travis .env
+  - psql -c 'create database travis_ci_test;' -U postgres
+  - php artisan key:generate
+  - php artisan migrate
+  - php artisan serve &
+  - sleep 3 # give xvfb and chromedriver some time to start
+
+# Test and get code coverage
+script:
+  - php artisan dusk
+  - ./vendor/bin/phpunit --coverage-clover clover.xml
+
+# Submit coverage report to Codecov
+after_success:
+  - bash <(curl -s https://codecov.io/bash) -cF php
