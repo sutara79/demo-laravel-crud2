@@ -5,7 +5,6 @@ namespace Tests\Browser;
 use Tests\DuskTestCase;
 use Laravel\Dusk\Browser;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Illuminate\Support\Facades\Request;
 
 class ExampleTest extends DuskTestCase
 {
@@ -17,13 +16,8 @@ class ExampleTest extends DuskTestCase
     public function testBasicExample()
     {
         $this->browse(function (Browser $browser) {
-            // $text = $browser->visit('/')
-            //                 ->text('.flex-center');
-            // $browser->visit('/')
-                    // ->assertSee('Laravel');
-            $browser->visit('/');
-            $name = Request::url();
-            $browser->assertSee($name);
+            $browser->visit('/')
+                    ->assertSee('Laravel');
         });
     }
 }
