@@ -16,8 +16,11 @@ class ExampleTest extends DuskTestCase
     public function testBasicExample()
     {
         $this->browse(function (Browser $browser) {
+            $text = $browser->visit('/')
+                            ->text('.flex-center');
             $browser->visit('/')
-                    ->assertSee('Laravel');
+                    // ->assertSee('Laravel');
+                    ->assertSee($text);
         });
     }
 }
