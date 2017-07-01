@@ -25,8 +25,3 @@ before_script:
 # Test and get code coverage
 script:
   - php artisan dusk
-  - ./vendor/bin/phpunit --coverage-clover clover.xml
-
-# Submit coverage report to Codecov
-after_success:
-  - bash <(curl -s https://codecov.io/bash) -cF php
